@@ -89,7 +89,7 @@ public class CLIApplication implements CommandLineRunner {
         boolean back = false;
         while (!back) {
             System.out.println("\n" + CYAN + "--- Passenger Management ---" + RESET);
-            System.out.println("1. List All Passengers");
+            System.out.println("1. List Passengers (Paginated)");
             System.out.println("2. Find Passenger by ID");
             System.out.println("3. Create Passenger");
             System.out.println("4. Update Passenger");
@@ -99,7 +99,21 @@ public class CLIApplication implements CommandLineRunner {
             String choice = scanner.nextLine().trim();
             switch (choice) {
                 case "1":
-                    List<Passenger> passengers = apiClient.getAllPassengers();
+                    System.out.print("Enter page number (default 0): ");
+                    String pStr = scanner.nextLine().trim();
+                    int page = pStr.isEmpty() ? 0 : Integer.parseInt(pStr);
+                    System.out.print("Enter page size (default 20): ");
+                    String sStr = scanner.nextLine().trim();
+                    int size = sStr.isEmpty() ? 20 : Integer.parseInt(sStr);
+                    System.out.print("Enter sorting column and order (e.g. 'lastName,asc' or 'firstName,desc', press enter to skip): ");
+                    String sort = scanner.nextLine().trim();
+                    if (sort.isEmpty()) {
+                        sort = null;
+                    }
+
+                    List<Passenger> passengers = apiClient.getPassengers(page, size, sort);
+                    System.out.println(YELLOW + "Page info: page " + page + " size " + size + " (returned "
+                            + passengers.size() + " items)" + RESET);
                     printPassengerTable(passengers);
                     break;
                 case "2":
@@ -306,8 +320,13 @@ public class CLIApplication implements CommandLineRunner {
                     System.out.print("Enter page size (default 20): ");
                     String sStr = scanner.nextLine().trim();
                     int size = sStr.isEmpty() ? 20 : Integer.parseInt(sStr);
+                    System.out.print("Enter sorting column and order (e.g. 'name,asc' or 'population,desc', press enter to skip): ");
+                    String sort = scanner.nextLine().trim();
+                    if (sort.isEmpty()) {
+                        sort = null;
+                    }
 
-                    List<City> cities = apiClient.getCities(page, size);
+                    List<City> cities = apiClient.getCities(page, size, sort);
                     System.out.println(YELLOW + "Page info: page " + page + " size " + size + " (returned "
                             + cities.size() + " items)" + RESET);
                     printCityTable(cities);

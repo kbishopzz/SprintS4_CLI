@@ -34,6 +34,18 @@ public class ApiClient {
     return getList("/api/passengers", Passenger.class);
   }
 
+  public List<Passenger> getPassengers(int page, int size) throws IOException {
+    return getPassengers(page, size, null);
+  }
+
+  public List<Passenger> getPassengers(int page, int size, String sort) throws IOException {
+    StringBuilder path = new StringBuilder("/api/passengers?page=").append(page).append("&size=").append(size);
+    if (sort != null && !sort.isBlank()) {
+      path.append("&sort=").append(URLEncoder.encode(sort, StandardCharsets.UTF_8));
+    }
+    return getList(path.toString(), Passenger.class);
+  }
+
   public Passenger getPassengerById(long id) throws IOException {
     return get("/api/passengers/" + id, Passenger.class);
   }
