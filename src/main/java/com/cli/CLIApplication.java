@@ -77,7 +77,7 @@ public class CLIApplication implements CommandLineRunner {
         System.out.println("2. Manage Airports");
         System.out.println("3. Manage Cities");
         System.out.println("4. Manage Planes");
-        System.out.println("5. Domain Queries");
+        System.out.println("5. Sprint Questions");
         System.out.println("6. Exit");
         System.out.print("Select an option: ");
     }
@@ -528,7 +528,7 @@ public class CLIApplication implements CommandLineRunner {
     private void runDomainQueries() throws Exception {
         boolean back = false;
         while (!back) {
-            System.out.println("\n" + CYAN + "--- Domain Query Menu ---" + RESET);
+            System.out.println("\n" + CYAN + "--- Sprint Questions Menu ---" + RESET);
             System.out.println("1. List Airports in a City");
             System.out.println("2. List Planes for a Passenger");
             System.out.println("3. List Airports for a Plane");
